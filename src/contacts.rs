@@ -1,4 +1,4 @@
-use std::{fmt, io};
+use std::{collections::VecDeque, fmt, io};
 
 pub enum ContactType {
     Work,
@@ -24,11 +24,11 @@ impl fmt::Display for ContactType {
 }
 
 impl Contact {
-    pub fn add(contacts: &mut Vec<Self>, name: String, phone: String, contact_type: ContactType) {
-        contacts.push(Self { name, phone, contact_type })
+    pub fn add(contacts: &mut VecDeque<Self>, name: String, phone: String, contact_type: ContactType) {
+        contacts.push_back(Self { name, phone, contact_type })
     }
 
-    pub fn search(contacts: &[Self], name: String) {
+    pub fn search(contacts: &VecDeque<Self>, name: String) {
         match contacts.iter().find(|contact| contact.name.to_lowercase() == name.to_lowercase()) {
             Some(contact) => {
                 println!("Contact ditemukan!\n");
@@ -41,10 +41,10 @@ impl Contact {
         };
     }
 
-    pub fn delete(contacts: &mut Vec<Self>, name: String) {
+    pub fn delete(contacts: &mut VecDeque<Self>, name: String) {
         match contacts.iter_mut().position(|contact| contact.name.to_lowercase() == name.to_lowercase()) {
             Some(contact) => {
-                contacts.remove(contact);
+                contacts.swap_remove_back(contact);
                 println!("Contact berhasil dihapus!\n");
             },
             _ => {
@@ -55,7 +55,7 @@ impl Contact {
     }
 }
 
-pub fn add_contact(contacts: &mut Vec<Contact>) {
+pub fn add_contact(contacts: &mut VecDeque<Contact>) {
     println!("Contact Name: ");
     let mut name: String = String::new();
     io::stdin().read_line(&mut name).expect("Cannot read input!");
@@ -84,7 +84,7 @@ pub fn add_contact(contacts: &mut Vec<Contact>) {
     println!("Contact berhasil ditambahkan!\n");
 }
 
-pub fn list_contact(contacts: &[Contact]) {
+pub fn list_contact(contacts: &VecDeque<Contact>) {
     if contacts.is_empty() {
         println!("Contact empty!");
         return;
@@ -96,7 +96,7 @@ pub fn list_contact(contacts: &[Contact]) {
     };
 }
 
-pub fn search_contact(contacts: &Vec<Contact>) {
+pub fn search_contact(contacts: &VecDeque<Contact>) {
     println!("Masukkan Nama: ");
     let mut name: String = String::new();
     io::stdin().read_line(&mut name).expect("Cannot read input!");
@@ -104,7 +104,7 @@ pub fn search_contact(contacts: &Vec<Contact>) {
     Contact::search(contacts, name);
 }
 
-pub fn delete_contact(contacts: &mut Vec<Contact>) {
+pub fn delete_contact(contacts: &mut VecDeque<Contact>) {
     println!("Masukkan Nama: ");
     let mut name: String = String::new();
     io::stdin().read_line(&mut name).expect("Cannot read input!");

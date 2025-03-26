@@ -1,10 +1,10 @@
 mod contacts;
 
-use std::io;
+use std::{io, collections::VecDeque};
 use contacts::Contact;
 
 fn main() {
-    let mut contacts: Vec<Contact> = Vec::new();
+    let mut contacts: VecDeque<Contact> = VecDeque::new();
 
     println!("Contact Manager");
     println!("1. Buat Contact Baru");

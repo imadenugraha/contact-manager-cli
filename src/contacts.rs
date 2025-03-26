@@ -31,11 +31,11 @@ impl Contact {
     pub fn search(contacts: &VecDeque<Self>, name: String) {
         match contacts.iter().find(|contact| contact.name.to_lowercase() == name.to_lowercase()) {
             Some(contact) => {
-                println!("Contact ditemukan!\n");
-                println!("{} - {} [{}]", contact.name, contact.phone, contact.contact_type);
+                println!("Contact Ditemukan!");
+                println!("{} - {} [{}]\n", contact.name, contact.phone, contact.contact_type);
             },
             None => {
-                println!("Contact tidak ditemukan!\n");
+                println!("Contact tidak ditemukan!");
                 return;
             }
         };
@@ -100,6 +100,7 @@ pub fn search_contact(contacts: &VecDeque<Contact>) {
     println!("Masukkan Nama: ");
     let mut name: String = String::new();
     io::stdin().read_line(&mut name).expect("Cannot read input!");
+    let name: String = name.trim().to_string();
 
     Contact::search(contacts, name);
 }
